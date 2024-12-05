@@ -1,3 +1,5 @@
+import { Module } from "../types";
+
 export default [
   {
     "_id": "M101",
@@ -113,4 +115,4 @@ export default [
     "description": "Overview of spacecraft systems and subsystems engineering.",
     "course": "RS103"
   }
-]
+] as Module[];

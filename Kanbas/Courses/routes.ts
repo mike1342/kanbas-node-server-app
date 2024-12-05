@@ -1,30 +1,31 @@
-import * as dao from "./dao.js";
-import * as modulesDao from "../Modules/dao.js";
-import * as assignmentsDao from "../Assignments/dao.js";
+import { Router } from "express";
+import { createModule, findModulesForCourse } from "../Modules/dao";
+import { createAssignment, findAssignmentsForCourse } from "../Assignments/dao";
+import { deleteCourse, findAllCourses, updateCourse } from "./dao";
 
-export default function CourseRoutes(app) {
+export default function CourseRoutes(app: Router) {
 
   app.get("/api/courses", (req, res) => {
-    const courses = dao.findAllCourses();
+    const courses = findAllCourses();
     res.send(courses);
   });
 
   app.delete("/api/courses/:courseId", (req, res) => {
     const { courseId } = req.params;
-    const status = dao.deleteCourse(courseId);
+    const status = deleteCourse(courseId);
     res.send(status);
   });
 
   app.put("/api/courses/:courseId", (req, res) => {
     const { courseId } = req.params;
     const courseUpdates = req.body;
-    const status = dao.updateCourse(courseId, courseUpdates);
+    const status = updateCourse(courseId, courseUpdates);
     res.send(status);
   });
 
   app.get("/api/courses/:courseId/modules", (req, res) => {
     const { courseId } = req.params;
-    const modules = modulesDao.findModulesForCourse(courseId);
+    const modules = findModulesForCourse(courseId);
     res.json(modules);
   });
 
@@ -34,13 +35,13 @@ export default function CourseRoutes(app) {
       ...req.body,
       course: courseId,
     };
-    const newModule = modulesDao.createModule(module);
+    const newModule = createModule(module);
     res.send(newModule);
   });
 
   app.get("/api/courses/:courseId/assignments", (req, res) => {
     const { courseId } = req.params;
-    const assignments = assignmentsDao.findAssignmentsForCourse(courseId);
+    const assignments = findAssignmentsForCourse(courseId);
     res.json(assignments);
   });
 
@@ -50,7 +51,7 @@ export default function CourseRoutes(app) {
       ...req.body,
       course: courseId,
     };
-    const newAssignment = assignmentsDao.createAssignment(assignment);
+    const newAssignment = createAssignment(assignment);
     res.send(newAssignment);
   });
 

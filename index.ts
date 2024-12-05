@@ -1,14 +1,14 @@
 import express from 'express'
-import Hello from "./Hello.js"
-import Lab5 from "./Lab5/index.js";
 import cors from 'cors';
-import UserRoutes from './Kanbas/Users/routes.js';
 import session from 'express-session';
 import 'dotenv/config';
-import CourseRoutes from './Kanbas/Courses/routes.js';
-import ModuleRoutes from './Kanbas/Modules/routes.js';
-import AssignmentRoutes from './Kanbas/Assignments/routes.js';
-import EnrollmentRoutes from './Kanbas/Enrollments/routes.js';
+import quizController from './Kanbas/Quizzes/quizController';
+import EnrollmentRoutes from './Kanbas/Enrollments/routes';
+import AssignmentRoutes from './Kanbas/Assignments/routes';
+import UserRoutes from './Kanbas/Users/routes';
+import CourseRoutes from './Kanbas/Courses/routes';
+import ModuleRoutes from './Kanbas/Modules/routes';
+
 const app = express()
 app.use(
   cors({
@@ -17,7 +17,7 @@ app.use(
   })
 );
 
-const sessionOptions = {
+const sessionOptions: session.SessionOptions = {
   secret: process.env.SESSION_SECRET || "kanbas",
   resave: false,
   saveUninitialized: false,
@@ -38,6 +38,6 @@ CourseRoutes(app)
 ModuleRoutes(app)
 AssignmentRoutes(app)
 EnrollmentRoutes(app)
-Lab5(app)
-Hello(app)
+quizController(app)
 app.listen(process.env.PORT || 4000)
+console.log(`Server running on port ${process.env.PORT || 4000}`)

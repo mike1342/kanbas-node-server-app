@@ -1,3 +1,5 @@
+import { User } from "../types";
+
 export default [
   {
     "_id": "123",
@@ -125,4 +127,4 @@ export default [
     "lastActivity": "1852-11-27",
     "totalActivity": "21:32:43"
   }
-]
+] as User[];

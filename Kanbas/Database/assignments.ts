@@ -1,3 +1,5 @@
+import { Assignment } from "../types";
+
 export default [
   { 
     "_id": "A101", 
@@ -623,4 +625,4 @@ export default [
     "end_date": "2024-10-25",
     "points": 100, "description": "Fake description from json data"
   }
-]
+] as Assignment[];
