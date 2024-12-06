@@ -1,40 +1,68 @@
-import { Response } from "express";
-import { AddQuizRequest, FillInQuestion, MCQuestion, Quiz, TFQuestion } from "../types"
-import { saveQuiz } from "./quizDao";
+import { Response, Router } from 'express';
+import { AddQuizRequest, FillInQuestion, MCQuestion, Quiz, TFQuestion } from '../types';
+import { saveQuiz } from './quizDao';
 
-const quizController = (app: any) => {
-
+const quizController = (app: Router) => {
   const isQuizValid = (quiz: Quiz) => {
-    const initCheck = 
-      !!quiz.title && !!quiz.quizType && !!quiz.points && !!quiz.assignmentGroup && !!quiz.shuffleAnswers && !!quiz.timeLimit && !!quiz.multipleAttempts && !!quiz.howManyAttempts && !!quiz.showCorrectAnswers && !!quiz.oneQuestionAtATime && !!quiz.webcamRequired && !!quiz.lockQuestionsAfterAnswering && !!quiz.dueDate && !!quiz.availableFrom && !!quiz.availableUntil && quiz.questions.length > 0;
+    const initCheck =
+      !!quiz.title &&
+      !!quiz.quizType &&
+      !!quiz.points &&
+      !!quiz.assignmentGroup &&
+      !!quiz.shuffleAnswers &&
+      !!quiz.timeLimit &&
+      !!quiz.multipleAttempts &&
+      !!quiz.howManyAttempts &&
+      !!quiz.showCorrectAnswers &&
+      !!quiz.oneQuestionAtATime &&
+      !!quiz.webcamRequired &&
+      !!quiz.lockQuestionsAfterAnswering &&
+      !!quiz.dueDate &&
+      !!quiz.availableFrom &&
+      !!quiz.availableUntil &&
+      !!quiz.description &&
+      !!quiz.isPublished &&
+      quiz.questions.length > 0;
     if (!initCheck) {
       return false;
     }
     for (const question of quiz.questions) {
-      const questionInitCheck = !!question.title && !!question.question && !!question.points && !!question.questionType;
+      const questionInitCheck =
+        !!question.title && !!question.question && !!question.points && !!question.questionType;
       if (!questionInitCheck) {
         return false;
       }
 
       switch (question.questionType) {
-        case 'MC':
+        case 'MC': {
           const mcQuestion = question as MCQuestion;
-          if (mcQuestion.choices.length < 2 || !mcQuestion.correctAnswer || !mcQuestion.choices.includes(mcQuestion.correctAnswer)) {
+          if (
+            mcQuestion.choices.length < 2 ||
+            !mcQuestion.correctAnswer ||
+            !mcQuestion.choices.includes(mcQuestion.correctAnswer)
+          ) {
             return false;
           }
           break;
-        case 'TF':
+        }
+        case 'TF': {
           const tfQuestion = question as TFQuestion;
           if (!tfQuestion.correctAnswer) {
             return false;
           }
           break;
-        case 'FillIn':
+        }
+        case 'FillIn': {
           const fillInQuestion = question as FillInQuestion;
-          if (!fillInQuestion.question || !fillInQuestion.correctAnswers || fillInQuestion.correctAnswers.length < 1) {
+          if (
+            !fillInQuestion.question ||
+            !fillInQuestion.correctAnswers ||
+            fillInQuestion.correctAnswers.length < 1
+          ) {
             return false;
           }
           break;
+        }
         default:
           return false;
       }
@@ -62,8 +90,9 @@ const quizController = (app: any) => {
         res.status(500).send(`Error when saving quiz`);
       }
     }
-  }
-  
-}
+  };
+
+  app.post('/quiz', addQuiz);
+};
 
 export default quizController;

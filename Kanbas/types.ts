@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request } from "express";
 
 
 export type QuizType = 'gradedQuiz' | 'practiceQuiz' | 'gradedSurvey' | 'ungradedSurvey';
@@ -13,7 +13,7 @@ export interface Question {
   questionType: QuestionType;
 };
 
-export interface QuestionAttempt extends Question {}
+export type QuestionAttempt = Question
 
 export interface MCQuestion extends Question {
   choices: string[];
@@ -70,6 +70,8 @@ export interface Quiz {
   availableUntil: Date;
   questions: Question[];
   quizAttempts: QuizAttempt[];
+  description: string;
+  isPublished: boolean;
 };
 
 export interface AddQuizRequest extends Request {
