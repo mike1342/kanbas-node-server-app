@@ -3,11 +3,17 @@ import model from "./model.js";
 
 let { users } = db;
 export const createUser = (user) => {
- const newUser = { ...user, _id: Date.now().toString() };
- users = [...users, newUser];
- return newUser;
+  delete user._id;
+  return model.create(user);
 };
 export const findAllUsers = () => model.find();
+export const findUsersByRole = (role) => model.find({ role });
+export const findUsersByPartialName = (partialName) => {
+  const regex = new RegExp(partialName, "i"); // 'i' makes it case-insensitive
+  return model.find({
+    $or: [{ firstName: { $regex: regex } }, { lastName: { $regex: regex } }],
+  });
+};
 export const findUserById = (userId) => model.findById(userId);
 export const findUserByUsername = (username) =>  model.findOne({ username: username });
 export const findUserByCredentials = (username, password) =>  model.findOne({ username, password });
