@@ -80,6 +80,12 @@ export interface AddQuizRequest extends Request {
 
 export type AddQuizResponse = Quiz | { error: string };
 
+export interface FindQuizByIdRequest extends Request {
+  params: {
+    qid: string;
+  };
+};
+
 
 // TYPES FOR REST OF SYSTEM
 export interface Assignment {

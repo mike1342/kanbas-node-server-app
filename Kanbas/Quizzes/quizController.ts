@@ -1,6 +1,6 @@
 import { Response, Router } from 'express';
-import { AddQuizRequest, FillInQuestion, MCQuestion, Quiz, TFQuestion } from '../types';
-import { saveQuiz } from './quizDao';
+import { AddQuizRequest, FillInQuestion, FindQuizByIdRequest, MCQuestion, Quiz, TFQuestion } from '../types';
+import { findQuizById, saveQuiz } from './quizDao';
 
 const quizTypes = ['gradedQuiz', 'practiceQuiz', 'gradedSurvey', 'ungradedSurvey'];
 const assignmentGroups = ['quiz', 'exam', 'assignment', 'project'];
@@ -95,7 +95,25 @@ const quizController = (app: Router) => {
     }
   };
 
-  app.post('/quiz', addQuiz);
+  const getQuizById = async (req: FindQuizByIdRequest, res: Response) => {
+    const { qid } = req.params;
+    try {
+      const result = await findQuizById(qid);
+      if ('error' in result) {
+        throw new Error(result.error);
+      }
+      res.json(result);
+    } catch (err) {
+      if (err instanceof Error) {
+        res.status(500).send(`Error when fetching quiz: ${err.message}`);
+      } else {
+        res.status(500).send(`Error when fetching quiz`);
+      }
+    }
+  };
+
+  app.post('/addQuiz', addQuiz);
+  app.get('/getQuizById/:qid', getQuizById);
 };
 
 export default quizController;
