@@ -1,5 +1,28 @@
 import mongoose from 'mongoose';
 
+const questionSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  question: {
+    type: String,
+    required: true,
+  },
+  points: {
+    type: Number,
+    required: true,
+  },
+  questionType: {
+    type: String,
+    enum: ['MC', 'TF', 'FillIn'],
+    required: true,
+  },
+  choices: [String], // For MC questions
+  correctAnswer: mongoose.Schema.Types.Mixed, // String for MC/FillIn, Boolean for TF
+  correctAnswers: [String], // For FillIn questions
+}, { _id: false });
+
 const quizSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -76,12 +99,7 @@ const quizSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  questions: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Question',
-    },
-  ],
+  questions: [{type: questionSchema, required: true}],
   quizAttempts: [
     {
       type: mongoose.Schema.Types.ObjectId,

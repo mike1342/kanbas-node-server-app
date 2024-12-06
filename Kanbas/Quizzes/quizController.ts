@@ -2,21 +2,24 @@ import { Response, Router } from 'express';
 import { AddQuizRequest, FillInQuestion, MCQuestion, Quiz, TFQuestion } from '../types';
 import { saveQuiz } from './quizDao';
 
+const quizTypes = ['gradedQuiz', 'practiceQuiz', 'gradedSurvey', 'ungradedSurvey'];
+const assignmentGroups = ['quiz', 'exam', 'assignment', 'project'];
+
 const quizController = (app: Router) => {
   const isQuizValid = (quiz: Quiz) => {
     const initCheck =
       !!quiz.title &&
-      !!quiz.quizType &&
+      quizTypes.includes(quiz.quizType || '') &&
       !!quiz.points &&
-      !!quiz.assignmentGroup &&
-      !!quiz.shuffleAnswers &&
-      !!quiz.timeLimit &&
-      !!quiz.multipleAttempts &&
+      assignmentGroups.includes(quiz.assignmentGroup || '') &&
+      typeof quiz.shuffleAnswers === "boolean" &&
+      typeof quiz.timeLimit === "number" &&
+      typeof quiz.multipleAttempts === "boolean" &&
       !!quiz.howManyAttempts &&
-      !!quiz.showCorrectAnswers &&
-      !!quiz.oneQuestionAtATime &&
-      !!quiz.webcamRequired &&
-      !!quiz.lockQuestionsAfterAnswering &&
+      typeof quiz.showCorrectAnswers === "boolean" &&
+      typeof quiz.oneQuestionAtATime === "boolean" &&
+      typeof quiz.webcamRequired === "boolean" &&
+      typeof quiz.lockQuestionsAfterAnswering === "boolean" &&
       !!quiz.dueDate &&
       !!quiz.availableFrom &&
       !!quiz.availableUntil &&
