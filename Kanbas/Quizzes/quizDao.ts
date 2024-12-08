@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { AddQuizResponse, Quiz } from "../types";
+import { AddQuizResponse, FindQuizzesByCourseResponse, Quiz } from "../types";
 import quizModel from "./quizModel";
 
 export const saveQuiz = async (quiz: Quiz): Promise<AddQuizResponse> => {
@@ -22,3 +22,12 @@ export const findQuizById = async (qid: string): Promise<AddQuizResponse> => {
     return { error: 'Error when fetching quiz' };
   }
 }
+
+export const findQuizzesByCourse = async (cid: string): Promise<FindQuizzesByCourseResponse> => {
+  try {
+    const quizzes: Quiz[] = await quizModel.find({ course: cid });
+    return quizzes;
+  } catch (error: unknown) {
+    return { error: 'Error when fetching quizzes' };
+  }
+};

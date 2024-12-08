@@ -1,6 +1,6 @@
 import { Response, Router } from 'express';
-import { AddQuizRequest, FillInQuestion, FindQuizByIdRequest, MCQuestion, Quiz, TFQuestion } from '../types';
-import { findQuizById, saveQuiz } from './quizDao';
+import { AddQuizRequest, FillInQuestion, FindQuizByIdRequest, FindQuizzesByCourseRequest, MCQuestion, Quiz, TFQuestion } from '../types';
+import { findQuizById, findQuizzesByCourse, saveQuiz } from './quizDao';
 
 const quizTypes = ['gradedQuiz', 'practiceQuiz', 'gradedSurvey', 'ungradedSurvey'];
 const assignmentGroups = ['quiz', 'exam', 'assignment', 'project'];
@@ -25,6 +25,7 @@ const quizController = (app: Router) => {
       !!quiz.availableUntil &&
       !!quiz.description &&
       typeof quiz.isPublished === "boolean" &&
+      !!quiz.cid &&
       quiz.questions.length > 0;
     if (!initCheck) {
       return false;
@@ -112,8 +113,24 @@ const quizController = (app: Router) => {
     }
   };
 
+  const getQuizzesByCourse = async (req: FindQuizzesByCourseRequest, res: Response) => {
+    const { cid } = req.params;
+    try {
+      const result = await findQuizzesByCourse(cid);
+      res.json(result);
+    } catch (err) {
+      if (err instanceof Error) {
+        res.status(500).send(`Error when fetching quizzes for course: ${err.message}`);
+      } else {
+        res.status(500).send(`Error when fetching quizzes for course`);
+      }
+    }
+  };
+
   app.post('/addQuiz', addQuiz);
   app.get('/getQuizById/:qid', getQuizById);
+  app.get('/getQuizzesByCourse/:cid', getQuizzesByCourse);
+
 };
 
 export default quizController;

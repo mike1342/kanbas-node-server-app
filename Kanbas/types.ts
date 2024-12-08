@@ -72,6 +72,7 @@ export interface Quiz {
   quizAttempts: QuizAttempt[];
   description: string;
   isPublished: boolean;
+  cid: string;
 };
 
 export interface AddQuizRequest extends Request {
@@ -80,9 +81,17 @@ export interface AddQuizRequest extends Request {
 
 export type AddQuizResponse = Quiz | { error: string };
 
+export type FindQuizzesByCourseResponse = Quiz[] | { error: string };
+
 export interface FindQuizByIdRequest extends Request {
   params: {
     qid: string;
+  };
+};
+
+export interface FindQuizzesByCourseRequest extends Request {
+  params: {
+    cid: string;
   };
 };
 
