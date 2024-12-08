@@ -1,18 +1,27 @@
-import Database from "../Database";
+import mongoose from "mongoose";
+import model from "./model";
 
-export function enrollUserInCourse(userId: string, courseId: string) {
-  const { enrollments } = Database;
-  const newEnrollment = { _id: Date.now().toString(), user: userId, course: courseId };
-  enrollments.push(newEnrollment);
-  return newEnrollment;
+export async function findCoursesForUser(userId: string) {
+ const enrollments = await model.find({ user: new mongoose.Types.ObjectId(userId) }).populate("course");
+ return enrollments.map((enrollment) => enrollment.course);
+}
+export async function findUsersForCourse(courseId: string) {
+ const enrollments = await model.find({ course: new mongoose.Types.ObjectId(courseId) }).populate("user");
+ return enrollments.map((enrollment) => enrollment.user);
+}
+export function enrollUserInCourse(user: string, course: string) {
+ return model.create({ user, course });
+}
+export function unenrollUserFromCourse(user: string, course: string) {
+ return model.deleteOne({ user, course });
 }
 
-export function deleteEnrollment(enrollmentId: string) {
-  const { enrollments } = Database;
-  Database.enrollments = enrollments.filter((enrollment) => enrollment._id !== enrollmentId);
-}
+export async function findEnrollmentsForUser(userId: string) {
+  const enrollments = await model.find({ user: new mongoose.Types.ObjectId(userId) });
+  console.log(enrollments);
+  return enrollments;
+};
 
-export function findEnrollmentsForUser(userId: string) {
-  const { enrollments } = Database;
-  return enrollments.filter((enrollment) => enrollment.user === userId);
-}
+export const deleteEnrollment = async (enrollmentId: string) => {
+  return model.findByIdAndDelete(enrollmentId);
+};

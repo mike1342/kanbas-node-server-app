@@ -51,7 +51,7 @@ export interface QuizAttempt {
 }
 
 export interface Quiz {
-  _id: string;
+  _id?: string;
   title: string;
   quizType: QuizType;
   points: number;
@@ -89,7 +89,7 @@ export interface FindQuizByIdRequest extends Request {
 
 // TYPES FOR REST OF SYSTEM
 export interface Assignment {
-  _id: string;
+  _id?: string;
   title: string;
   course: string;
   start_date: string;
@@ -99,7 +99,7 @@ export interface Assignment {
 }
 
 export interface Course {
-  _id: string;
+  _id?: string;
   name: string;
   number: string;
   startDate: string;
@@ -110,20 +110,27 @@ export interface Course {
 }
 
 export interface Enrollment {
-  _id: string; 
+  _id?: string; 
   user: string; 
   course: string;
+  grade: number;
+  letterGrade: string,
+  enrollmentDate: Date,
+  status: {
+    type: string,
+    enum: "ENROLLED" | "DROPPED" | "COMPLETED",
+  },
 }
 
 export interface Lesson {
-  _id: string;
+  _id?: string;
   name: string;
   description: string;
   module: string;
 }
 
 export interface Module {
-  _id: string;
+  _id?: string;
   name: string;
   description: string;
   course: string;
@@ -131,7 +138,7 @@ export interface Module {
 }
 
 export interface User {
-  _id: string;
+  _id?: string;
   username: string;
   password: string;
   firstName: string;

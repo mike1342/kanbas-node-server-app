@@ -1,31 +1,37 @@
 import { Router } from "express";
 import { createModule, findModulesForCourse } from "../Modules/dao";
 import { createAssignment, findAssignmentsForCourse } from "../Assignments/dao";
-import { deleteCourse, findAllCourses, updateCourse } from "./dao";
+import { createCourse, deleteCourse, findAllCourses, updateCourse } from "./dao";
 
 export default function CourseRoutes(app: Router) {
 
-  app.get("/api/courses", (req, res) => {
-    const courses = findAllCourses();
+  app.get("/api/courses", async (req, res) => {
+    const courses = await findAllCourses();
     res.send(courses);
   });
 
-  app.delete("/api/courses/:courseId", (req, res) => {
+  app.post("/api/courses", async (req, res) => {
+    const course = await createCourse(req.body);
+    res.json(course);
+  }); 
+
+  app.delete("/api/courses/:courseId", async (req, res) => {
     const { courseId } = req.params;
-    const status = deleteCourse(courseId);
+    const status = await deleteCourse(courseId);
     res.send(status);
   });
+ 
 
-  app.put("/api/courses/:courseId", (req, res) => {
+  app.put("/api/courses/:courseId", async (req, res) => {
     const { courseId } = req.params;
     const courseUpdates = req.body;
-    const status = updateCourse(courseId, courseUpdates);
+    const status = await updateCourse(courseId, courseUpdates);
     res.send(status);
   });
 
-  app.get("/api/courses/:courseId/modules", (req, res) => {
+  app.get("/api/courses/:courseId/modules", async (req, res) => {
     const { courseId } = req.params;
-    const modules = findModulesForCourse(courseId);
+    const modules = await findModulesForCourse(courseId);
     res.json(modules);
   });
 
