@@ -24,7 +24,7 @@ const quizController = (app: Router) => {
       !!quiz.availableFrom &&
       !!quiz.availableUntil &&
       !!quiz.description &&
-      !!quiz.isPublished &&
+      typeof quiz.isPublished === "boolean" &&
       quiz.questions.length > 0;
     if (!initCheck) {
       return false;
