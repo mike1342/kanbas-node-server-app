@@ -25,7 +25,7 @@ export const findQuizById = async (qid: string): Promise<AddQuizResponse> => {
 
 export const findQuizzesByCourse = async (cid: string): Promise<FindQuizzesByCourseResponse> => {
   try {
-    const quizzes: Quiz[] = await quizModel.find({ course: cid });
+    const quizzes: Quiz[] = await quizModel.find({ cid: cid });
     return quizzes;
   } catch (error: unknown) {
     return { error: 'Error when fetching quizzes' };
