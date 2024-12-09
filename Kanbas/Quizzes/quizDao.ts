@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { AddQuizResponse, FindQuizzesByCourseResponse, Quiz } from "../types";
-import quizModel from "./quizModel";
+import { AddQuizResponse, FindQuizzesByCourseResponse, Quiz } from '../types';
+import quizModel from './quizModel';
 
 export const saveQuiz = async (quiz: Quiz): Promise<AddQuizResponse> => {
   try {
@@ -21,7 +21,7 @@ export const findQuizById = async (qid: string): Promise<AddQuizResponse> => {
   } catch (error: unknown) {
     return { error: 'Error when fetching quiz' };
   }
-}
+};
 
 export const findQuizzesByCourse = async (cid: string): Promise<FindQuizzesByCourseResponse> => {
   try {
@@ -29,5 +29,19 @@ export const findQuizzesByCourse = async (cid: string): Promise<FindQuizzesByCou
     return quizzes;
   } catch (error: unknown) {
     return { error: 'Error when fetching quizzes' };
+  }
+};
+
+export const updateQuiz = async (quiz: Quiz): Promise<AddQuizResponse> => {
+  try {
+    const updatedQuiz: Quiz | null = await quizModel.findByIdAndUpdate(quiz._id, quiz, {
+      new: true,
+    });
+    if (!updatedQuiz) {
+      return { error: 'Quiz not found' };
+    }
+    return updatedQuiz;
+  } catch (error: unknown) {
+    return { error: 'Error when updating quiz' };
   }
 };

@@ -82,6 +82,7 @@ const quizController = (app: Router) => {
 
     const quiz: Quiz = req.body;
     try {
+      delete quiz._id;
       const result = await saveQuiz(quiz);
       if ('error' in result) {
         throw new Error(result.error);
@@ -127,9 +128,38 @@ const quizController = (app: Router) => {
     }
   };
 
+  const updateQuiz = async (req: AddQuizRequest, res: Response) => {
+    if (!req.body || !isQuizValid(req.body)) {
+      res.status(400).send('Invalid quiz');
+      return;
+    }
+
+    const quiz: Quiz = req.body;
+
+    if (!quiz._id) {
+      res.status(400).send('Quiz ID is required');
+      return;
+    }
+
+    try {
+      const result = await saveQuiz(quiz);
+      if ('error' in result) {
+        throw new Error(result.error);
+      }
+      res.json(result);
+    } catch (err) {
+      if (err instanceof Error) {
+        res.status(500).send(`Error when saving quiz: ${err.message}`);
+      } else {
+        res.status(500).send(`Error when saving quiz`);
+      }
+    }
+  }
+
   app.post('/addQuiz', addQuiz);
   app.get('/getQuizById/:qid', getQuizById);
   app.get('/getQuizzesByCourse/:cid', getQuizzesByCourse);
+  app.put('/updateQuiz', updateQuiz);
 
 };
 
