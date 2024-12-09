@@ -45,3 +45,15 @@ export const updateQuiz = async (quiz: Quiz): Promise<AddQuizResponse> => {
     return { error: 'Error when updating quiz' };
   }
 };
+
+export const deleteQuiz = async (qid: string) => {
+  try {
+    const status = await quizModel.findByIdAndDelete(qid);
+    if (!status) {
+      return { error: 'Quiz not found' };
+    }
+    return status;
+  } catch (error: unknown) {
+    return { error: 'Error when deleting quiz' };
+  }
+}

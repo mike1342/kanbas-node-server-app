@@ -149,9 +149,26 @@ const quizController = (app: Router) => {
       res.json(result);
     } catch (err) {
       if (err instanceof Error) {
-        res.status(500).send(`Error when saving quiz: ${err.message}`);
+        res.status(500).send(`Error when updating quiz: ${err.message}`);
       } else {
-        res.status(500).send(`Error when saving quiz`);
+        res.status(500).send(`Error when updating quiz`);
+      }
+    }
+  };
+
+  const deleteQuiz = async (req: FindQuizByIdRequest, res: Response) => {
+    const { qid } = req.params;
+    try {
+      const result = await findQuizById(qid);
+      if ('error' in result) {
+        throw new Error(result.error);
+      }
+      res.send(result);
+    } catch (err) {
+      if (err instanceof Error) {
+        res.status(500).send(`Error when deleting quiz: ${err.message}`);
+      } else {
+        res.status(500).send(`Error when deleting quiz`);
       }
     }
   }
@@ -160,6 +177,7 @@ const quizController = (app: Router) => {
   app.get('/getQuizById/:qid', getQuizById);
   app.get('/getQuizzesByCourse/:cid', getQuizzesByCourse);
   app.put('/updateQuiz', updateQuiz);
+  app.delete('/deleteQuiz/:qid', deleteQuiz);
 
 };
 
