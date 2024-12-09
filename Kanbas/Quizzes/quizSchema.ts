@@ -114,6 +114,10 @@ const quizSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  cid: {
+    type: String,
+    required: true,
+  }
 });
 
 export default quizSchema;
