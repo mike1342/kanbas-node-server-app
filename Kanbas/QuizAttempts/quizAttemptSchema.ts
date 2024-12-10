@@ -46,6 +46,6 @@ const quizAttemptSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-});
+}, { collection: "quizAttempts" });
 
 export default quizAttemptSchema;
