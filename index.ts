@@ -9,6 +9,7 @@ import UserRoutes from './Kanbas/Users/routes';
 import CourseRoutes from './Kanbas/Courses/routes';
 import ModuleRoutes from './Kanbas/Modules/routes';
 import mongoose from 'mongoose';
+import quizAttemptController from './Kanbas/QuizAttempts/quizAttemptController';
 
 const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kanbas_final";
 mongoose.connect(CONNECTION_STRING);
@@ -43,5 +44,6 @@ ModuleRoutes(app)
 AssignmentRoutes(app)
 EnrollmentRoutes(app)
 quizController(app)
+quizAttemptController(app)
 app.listen(process.env.PORT || 4000)
 console.log(`Server running on port ${process.env.PORT || 4000}`)

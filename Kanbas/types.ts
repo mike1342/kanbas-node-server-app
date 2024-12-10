@@ -41,7 +41,7 @@ export interface FillInQuestionAttempt extends QuestionAttempt, FillInQuestion {
 }
 
 export interface QuizAttempt {
-  _id: string;
+  _id?: string;
   quizId: string;
   studentId: string;
   score: number;
@@ -49,6 +49,29 @@ export interface QuizAttempt {
   timeEnded: Date;
   answers: QuestionAttempt[];
 }
+
+export interface SubmitQuizAttemptRequest extends Request {
+  body: QuizAttempt;
+}
+
+export type SubmitQuizAttemptResponse = QuizAttempt | { error: string };
+
+export interface GetQuizAttemptByIdRequest extends Request {
+  params: {
+    qaid: string;
+  };
+}
+
+export type GetQuizAttemptByIdResponse = QuizAttempt | { error: string };
+
+export interface GetQuizAttemptsForQuizRequest extends Request {
+  params: {
+    qid: string;
+    uid: string;
+  };
+}
+
+export type GetQuizAttemptsForQuizResponse = QuizAttempt[] | { error: string };
 
 export interface Quiz {
   _id?: string;
