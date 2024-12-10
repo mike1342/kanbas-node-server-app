@@ -46,7 +46,7 @@ export const setQuiz = async (quiz: Quiz): Promise<AddQuizResponse> => {
   }
 };
 
-export const deleteQuiz = async (qid: string) => {
+export const removeQuiz = async (qid: string) => {
   try {
     const status = await quizModel.findByIdAndDelete(qid);
     if (!status) {

@@ -1,6 +1,6 @@
 import { Response, Router } from 'express';
 import { AddQuizRequest, FillInQuestion, FindQuizByIdRequest, FindQuizzesByCourseRequest, MCQuestion, Quiz, TFQuestion } from '../types';
-import { findQuizById, findQuizzesByCourse, saveQuiz, setQuiz } from './quizDao';
+import { findQuizById, findQuizzesByCourse, removeQuiz, saveQuiz, setQuiz } from './quizDao';
 
 const quizTypes = ['gradedQuiz', 'practiceQuiz', 'gradedSurvey', 'ungradedSurvey'];
 const assignmentGroups = ['quiz', 'exam', 'assignment', 'project'];
@@ -159,7 +159,7 @@ const quizController = (app: Router) => {
   const deleteQuiz = async (req: FindQuizByIdRequest, res: Response) => {
     const { qid } = req.params;
     try {
-      const result = await findQuizById(qid);
+      const result = await removeQuiz(qid);
       if ('error' in result) {
         throw new Error(result.error);
       }
