@@ -51,7 +51,7 @@ const quizController = (app: Router) => {
         }
         case 'TF': {
           const tfQuestion = question as TFQuestion;
-          if (!tfQuestion.correctAnswer) {
+          if (typeof tfQuestion.correctAnswer !== 'boolean') {
             return false;
           }
           break;
