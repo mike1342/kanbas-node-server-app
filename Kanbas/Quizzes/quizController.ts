@@ -1,6 +1,6 @@
 import { Response, Router } from 'express';
 import { AddQuizRequest, FillInQuestion, FindQuizByIdRequest, FindQuizzesByCourseRequest, MCQuestion, Quiz, TFQuestion } from '../types';
-import { findQuizById, findQuizzesByCourse, saveQuiz } from './quizDao';
+import { findQuizById, findQuizzesByCourse, saveQuiz, setQuiz } from './quizDao';
 
 const quizTypes = ['gradedQuiz', 'practiceQuiz', 'gradedSurvey', 'ungradedSurvey'];
 const assignmentGroups = ['quiz', 'exam', 'assignment', 'project'];
@@ -142,7 +142,7 @@ const quizController = (app: Router) => {
     }
 
     try {
-      const result = await saveQuiz(quiz);
+      const result = await setQuiz(quiz);
       if ('error' in result) {
         throw new Error(result.error);
       }

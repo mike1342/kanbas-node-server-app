@@ -32,7 +32,7 @@ export const findQuizzesByCourse = async (cid: string): Promise<FindQuizzesByCou
   }
 };
 
-export const updateQuiz = async (quiz: Quiz): Promise<AddQuizResponse> => {
+export const setQuiz = async (quiz: Quiz): Promise<AddQuizResponse> => {
   try {
     const updatedQuiz: Quiz | null = await quizModel.findByIdAndUpdate(quiz._id, quiz, {
       new: true,
