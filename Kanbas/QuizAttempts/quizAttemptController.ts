@@ -7,7 +7,7 @@ const quizAttemptController = (app: Router) => {
     const initCheck =
       !!quizAttempt.quizId &&
       !!quizAttempt.studentId &&
-      !!quizAttempt.score &&
+      typeof quizAttempt.score === 'number' &&
       !!quizAttempt.timeStarted &&
       !!quizAttempt.timeEnded &&
       quizAttempt.answers.length > 0;
@@ -15,10 +15,11 @@ const quizAttemptController = (app: Router) => {
       return false;
     }
     for (const questionAttempt of quizAttempt.answers) {
+      delete questionAttempt._id;
       const questionInitCheck =
         !!questionAttempt.title &&
         !!questionAttempt.question &&
-        !!questionAttempt.points &&
+        typeof questionAttempt.points === 'number' &&
         !!questionAttempt.questionType;
       if (!questionInitCheck) {
         return false;

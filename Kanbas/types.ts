@@ -6,7 +6,7 @@ export type AssignmentType = 'quiz' | 'exam' | 'assignment' | 'project';
 export type QuestionType = 'MC' | 'TF' | 'FillIn';
 
 export interface Question {
-  _id: string;
+  _id?: string;
   title: string;
   question: string;
   points: number;

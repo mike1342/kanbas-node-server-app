@@ -31,6 +31,7 @@ const quizController = (app: Router) => {
       return false;
     }
     for (const question of quiz.questions) {
+      delete question._id;
       const questionInitCheck =
         !!question.title && !!question.question && !!question.points && !!question.questionType;
       if (!questionInitCheck) {

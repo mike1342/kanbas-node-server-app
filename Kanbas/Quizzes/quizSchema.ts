@@ -21,7 +21,7 @@ const questionSchema = new mongoose.Schema({
   choices: [String], // For MC questions
   correctAnswer: mongoose.Schema.Types.Mixed, // String for MC/FillIn, Boolean for TF
   correctAnswers: [String], // For FillIn questions
-}, { _id: false });
+});
 
 const quizSchema = new mongoose.Schema({
   title: {
