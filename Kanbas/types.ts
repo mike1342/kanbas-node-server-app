@@ -115,6 +115,7 @@ export interface FindQuizByIdRequest extends Request {
 export interface FindQuizzesByCourseRequest extends Request {
   params: {
     cid: string;
+    uid: string;
   };
 };
 

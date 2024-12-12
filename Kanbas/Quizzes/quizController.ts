@@ -116,9 +116,9 @@ const quizController = (app: Router) => {
   };
 
   const getQuizzesByCourse = async (req: FindQuizzesByCourseRequest, res: Response) => {
-    const { cid } = req.params;
+    const { cid, uid } = req.params;
     try {
-      const result = await findQuizzesByCourse(cid);
+      const result = await findQuizzesByCourse(cid, uid);
       res.json(result);
     } catch (err) {
       if (err instanceof Error) {
@@ -176,7 +176,7 @@ const quizController = (app: Router) => {
 
   app.post('/addQuiz', addQuiz);
   app.get('/getQuizById/:qid', getQuizById);
-  app.get('/getQuizzesByCourse/:cid', getQuizzesByCourse);
+  app.get('/getQuizzesByCourse/:cid/:uid', getQuizzesByCourse);
   app.put('/updateQuiz', updateQuiz);
   app.delete('/deleteQuiz/:qid', deleteQuiz);
 

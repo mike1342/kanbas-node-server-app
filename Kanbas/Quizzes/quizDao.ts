@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { AddQuizResponse, FindQuizzesByCourseResponse, Quiz } from '../types';
+import model from '../Users/model';
 import quizModel from './quizModel';
 
 export const saveQuiz = async (quiz: Quiz): Promise<AddQuizResponse> => {
@@ -23,9 +24,25 @@ export const findQuizById = async (qid: string): Promise<AddQuizResponse> => {
   }
 };
 
-export const findQuizzesByCourse = async (cid: string): Promise<FindQuizzesByCourseResponse> => {
+export const findQuizzesByCourse = async (cid: string, uid: string): Promise<FindQuizzesByCourseResponse> => {
   try {
-    const quizzes: Quiz[] = await quizModel.find({ cid: cid });
+
+    const user = await model.findById(uid);
+    if (!user) {
+      return { error: 'User not found' };
+    }
+    const query: Partial<Quiz> = { cid: cid };
+    if (user.role === 'STUDENT') {
+      query['isPublished'] = true;
+    }
+
+    const quizzes: Quiz[] = await quizModel.find(query);
+    //Shuffle questions if needed
+    quizzes.forEach((quiz) => {
+      if (quiz.shuffleAnswers) {
+        quiz.questions.sort(() => Math.random() - 0.5);
+      }
+    });
     return quizzes;
   } catch (error: unknown) {
     return { error: 'Error when fetching quizzes' };
